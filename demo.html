@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinConnect Canada - 360° Financial View</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #818cf8, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #6366f1, #ec4899);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Dashboard Layout */
+        .dashboard-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #1e293b;
+            border-right: 1px solid rgba(148, 163, 184, 0.1);
+            padding: 2rem 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #818cf8, #e879f9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin: 0.25rem 0;
+            border-radius: 8px;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(148, 163, 184, 0.1);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #6366f1;
+        }
+
+        .institution-group {
+            margin: 1.5rem 0;
+            border-left: 3px solid #6366f1;
+            padding-left: 1rem;
+        }
+
+        .institution-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .account-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .account-info {
+            flex: 1;
+        }
+
+        .account-label {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .account-meta {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .account-balance {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .transaction {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+
+        .api-status {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            color: #10b981;
+            font-size: 0.875rem;
+            z-index: 1000;
+        }
+
+        .api-status.error {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .insight-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+
+        .insight-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #6366f1, #ec4899);
+            transition: width 0.5s ease;
+        }
+
+        .persona-selector select {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .connection-step {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .connection-step.connected {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        /* Modal System */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 500px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Persona Switcher */
+        .persona-switcher-header {
+            position: fixed;
+            top: 1rem;
+            left: 270px;
+            z-index: 999;
+            background: rgba(30, 41, 59, 0.95);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            backdrop-filter: blur(12px);
+        }
+
+        .persona-switcher-header select {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            border-radius: 8px;
+            color: white;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        /* Pie Chart */
+        .pie-chart-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+        }
+
+        .pie-chart {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1e293b;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* Enhanced Progress Bar */
+        .progress-enhanced {
+            height: 12px;
+            margin: 1rem 0;
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="api-status" id="apiStatus">⚡ API Connected</div>
+
+    <!-- Landing Page -->
+    <div id="landingPage" class="container">
+        <div class="hero">
+            <h1>FinConnect Canada</h1>
+            <p class="subtitle">The 360° Financial View - Connect All Your Accounts</p>
+            <button class="btn" onclick="showConsentScreen()">See Your Financial Health</button>
+        </div>
+    </div>
+
+    <!-- Consent Screen -->
+    <div id="consentScreen" class="container hidden">
+        <div class="glass-panel" style="max-width: 600px; margin: 4rem auto;">
+            <h2 style="margin-bottom: 1rem;">Connect Your Accounts</h2>
+            <p style="color: #94a3b8; margin-bottom: 2rem;">Select your financial institutions to create your unified
+                dashboard</p>
+
+            <div id="connectionSteps" class="hidden">
+                <div class="connection-step" id="step1">
+                    <div class="spinner"></div>
+                    <div>
+                        <div style="font-weight: 600;">Connecting to Big Bank...</div>
+                        <div style="font-size: 0.875rem; color: #94a3b8;">Authenticating...</div>
+                    </div>
+                </div>
+                <div class="connection-step" id="step2">
+                    <div class="spinner"></div>
+                    <div>
+                        <div style="font-weight: 600;">Connecting to Digital Bank...</div>
+                        <div style="font-size: 0.875rem; color: #94a3b8;">Fetching accounts...</div>
+                    </div>
+                </div>
+                <div class="connection-step" id="step3">
+                    <div class="spinner"></div>
+                    <div>
+                        <div style="font-weight: 600;">Connecting to Fintech...</div>
+                        <div style="font-size: 0.875rem; color: #94a3b8;">Syncing data...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="personaSelection">
+                <div class="persona-selector">
+                    <label style="display: block; margin-bottom: 0.5rem; color: #94a3b8;">Select Demo Persona:</label>
+                    <select id="personaSelect">
+                        <option value="stabilizer">Persona A: The Stabilizer (9-5 Worker)</option>
+                        <option value="hustler">Persona B: The Hustler (Gig Worker)</option>
+                        <option value="builder">Persona C: The Builder (SMB Owner)</option>
+                    </select>
+                </div>
+
+                <button class="btn" style="width: 100%; margin-top: 2rem;" onclick="authorizeAccess()">Connect All
+                    Accounts</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardLayout" class="dashboard-layout hidden">
+        <aside class="sidebar">
+            <div class="sidebar-logo">FinConnect</div>
+            <nav>
+                <div class="nav-item active" onclick="showModule('accounts')">🏦 All Accounts</div>
+                <div class="nav-item" onclick="showModule('overview')">📊 Overview</div>
+                <div class="nav-item" onclick="showModule('lending')">💳 Smart Lending</div>
+                <div class="nav-item" onclick="showModule('pfm')">📈 PFM</div>
+                <div class="nav-item" onclick="showModule('wealth')">💰 Wealth</div>
+                <div class="nav-item" onclick="showModule('payroll')">👥 Payroll</div>
+                <div class="nav-item" onclick="showModule('payments')">💸 Payments</div>
+                <div class="nav-item" onclick="showModule('tax')">📄 Tax</div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- All Accounts Module (NEW!) -->
+            <div id="module-accounts" class="module-content">
+                <h2>Your Connected Accounts</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">360° view across <span id="accountCount">7</span>
+                    accounts from <span id="institutionCount">3</span> institutions</p>
+
+                <div id="accountsView"></div>
+            </div>
+
+            <!-- Overview Module -->
+            <div id="module-overview" class="module-content hidden">
+                <h2>Welcome back, <span id="personaName">User</span></h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Financial Health Overview • <span
+                        id="personaSegment"></span></p>
+
+                <div id="globalInsights"></div>
+
+                <div class="grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Global Liquidity</div>
+                        <div class="stat-value" id="globalLiquidity">$0</div>
+                        <p style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">Across all checking accounts
+                        </p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Net Worth</div>
+                        <div class="stat-value" id="totalNetWorth">$0</div>
+                        <p style="color: #10b981; font-size: 0.875rem; margin-top: 0.5rem;">All assets combined</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">True Annual Income</div>
+                        <div class="stat-value" id="trueIncome">$0</div>
+                        <p style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">From all sources</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel">
+                    <h3>Unified Transaction Feed</h3>
+                    <p style="color: #94a3b8; margin-bottom: 1rem;">All transactions across your 7 accounts</p>
+                    <div id="transactions"></div>
+                </div>
+            </div>
+
+            <!-- Lending Module -->
+            <div id="module-lending" class="module-content hidden">
+                <h2>Smart Lending - Global View</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Proving affordability across ALL your accounts</p>
+
+                <div id="lendingComparison"></div>
+
+                <div class="grid">
+                    <div class="glass-panel" style="text-align: center;">
+                        <h3 style="color: #94a3b8; font-size: 1rem; margin-bottom: 1rem;">Cash Flow Score</h3>
+                        <div
+                            style="width: 150px; height: 150px; border-radius: 50%; border: 8px solid rgba(99, 102, 241, 0.3); display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: bold; margin: 2rem auto;">
+                            <span id="cashFlowScore">--</span>
+                        </div>
+                        <p style="color: #94a3b8; font-size: 0.875rem;">Based on combined income from all accounts</p>
+                    </div>
+
+                    <div class="glass-panel">
+                        <h3 style="margin-bottom: 1.5rem;">Loan Eligibility</h3>
+                        <div
+                            style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                            <div style="color: #94a3b8; font-size: 0.875rem;">Monthly Affordability</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;" id="affordability">$0
+                            </div>
+                        </div>
+                        <div id="loanOffer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PFM Module -->
+            <div id="module-pfm" class="module-content hidden">
+                <h2>Personal Finance Management</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Subscription Hunter - Find subscriptions across all
+                    cards</p>
+
+                <div id="subscriptionInsights"></div>
+
+                <div class="glass-panel">
+                    <h3>All Subscriptions Across Your Accounts</h3>
+                    <div id="subscriptions"></div>
+                </div>
+            </div>
+
+            <!-- Wealth Module -->
+            <div id="module-wealth" class="module-content hidden">
+                <h2>Wealth Optimization</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Net Worth by Category, not by Bank</p>
+
+                <div id="lazyMoneyAlert"></div>
+
+                <div class="grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Cash</div>
+                        <div class="stat-value" id="totalCash">$0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Total Investments</div>
+                        <div class="stat-value" id="totalInvestments">$0</div>
+                    </div>
+                    <div class="stat-card" style="background: rgba(16, 185, 129, 0.1);">
+                        <div class="stat-label">Optimization Potential</div>
+                        <div class="stat-value" style="color: #10b981;" id="optimizationPotential">$0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payroll Module -->
+            <div id="module-payroll" class="module-content hidden">
+                <h2>Payroll & Income Verification</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;" id="payrollSubtitle">Income from multiple sources</p>
+                <div id="payrollContent"></div>
+            </div>
+
+            <!-- Payments Module -->
+            <div id="module-payments" class="module-content hidden">
+                <h2>Smart Payments</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Pay from the right account automatically</p>
+
+                <div id="paymentSourceSelector"></div>
+
+                <div class="glass-panel">
+                    <h3>Upcoming Bills</h3>
+                    <div id="billsList"></div>
+                </div>
+            </div>
+
+            <!-- Tax Module -->
+            <div id="module-tax" class="module-content hidden">
+                <h2>Tax Assistant</h2>
+                <p style="color: #94a3b8; margin-bottom: 2rem;">Business expenses across all accounts</p>
+                <div id="taxContent"></div>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Modal for Payment Safety Check -->
+    <div id="paymentModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1rem; color: #f59e0b;">⚠️ Insufficient Funds Warning</h3>
+            <p id="modalMessage" style="color: #94a3b8; margin-bottom: 2rem;"></p>
+            <div style="display: flex; gap: 1rem;">
+                <button onclick="closeModal()" class="btn btn-outline" style="flex: 1;">Cancel</button>
+                <button id="modalConfirm" class="btn" style="flex: 1;">Pay from Alternative Account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Persona Switcher (shown in dashboard) -->
+    <div id="personaSwitcherHeader" class="persona-switcher-header hidden">
+        <select id="personaSwitcher">
+            <option value="stabilizer">👔 The Stabilizer</option>
+            <option value="hustler">🚗 The Hustler</option>
+            <option value="builder">💼 The Builder</option>
+        </select>
+    </div>
+
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api';
+        let currentPersona = 'stabilizer';
+        let personaData = null;
+        let scoreData = null;
+
+        // Check API status
+        async function checkAPI() {
+            try {
+                const response = await fetch('http://localhost:8000/');
+                const status = document.getElementById('apiStatus');
+                if (response.ok) {
+                    status.textContent = '⚡ API Connected';
+                    status.classList.remove('error');
+                } else {
+                    throw new Error('API not responding');
+                }
+            } catch (error) {
+                const status = document.getElementById('apiStatus');
+                status.textContent = '❌ API Offline';
+                status.classList.add('error');
+            }
+        }
+
+        function showConsentScreen() {
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('consentScreen').classList.remove('hidden');
+        }
+
+        async function authorizeAccess() {
+            currentPersona = document.getElementById('personaSelect').value;
+
+            // Show connection animation
+            document.getElementById('personaSelection').classList.add('hidden');
+            document.getElementById('connectionSteps').classList.remove('hidden');
+
+            // Simulate connection process
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            document.getElementById('step1').classList.add('connected');
+            document.getElementById('step1').innerHTML = '<div style="color: #10b981; font-size: 1.5rem;">✓</div><div><div style="font-weight: 600;">Big Bank Connected</div><div style="font-size: 0.875rem; color: #10b981;">3 accounts found</div></div>';
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            document.getElementById('step2').classList.add('connected');
+            document.getElementById('step2').innerHTML = '<div style="color: #10b981; font-size: 1.5rem;">✓</div><div><div style="font-weight: 600;">Digital Bank Connected</div><div style="font-size: 0.875rem; color: #10b981;">2 accounts found</div></div>';
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+            document.getElementById('step3').classList.add('connected');
+            document.getElementById('step3').innerHTML = '<div style="color: #10b981; font-size: 1.5rem;">✓</div><div><div style="font-weight: 600;">Fintech Connected</div><div style="font-size: 0.875rem; color: #10b981;">2 accounts found</div></div>';
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            document.getElementById('consentScreen').classList.add('hidden');
+            document.getElementById('dashboardLayout').classList.remove('hidden');
+            await loadDashboardData();
+        }
+
+        async function loadDashboardData() {
+            try {
+                const personaResponse = await fetch(`${API_BASE}/data/persona/${currentPersona}`);
+                personaData = await personaResponse.json();
+
+                const scoreResponse = await fetch(`${API_BASE}/lending/score?persona_type=${currentPersona}`);
+                scoreData = await scoreResponse.json();
+
+                // Update all modules
+                updateAccountsView();
+                updateOverview();
+                updateLending();
+                updatePFM();
+                updateWealth();
+                updatePayroll();
+                updatePayments();
+                updateTax();
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Error loading data. Please ensure the backend is running on http://localhost:8000');
+            }
+
+            // Show persona switcher after data loads
+            document.getElementById('personaSwitcherHeader').classList.remove('hidden');
+            document.getElementById('personaSwitcher').value = currentPersona;
+        }
+
+        // ===== ENHANCEMENT FUNCTIONS =====
+
+        // Modal functions
+        function showPaymentWarning(billName, billAmount, fromAccount, toAccount) {
+            const modal = document.getElementById('paymentModal');
+            const message = document.getElementById('modalMessage');
+            message.textContent = `Warning: Insufficient funds in ${fromAccount.label} ($${fromAccount.balance.toLocaleString()}). Would you like to pay ${billName} ($${billAmount}) from ${toAccount.label} ($${toAccount.balance.toLocaleString()}) instead?`;
+            modal.style.display = 'flex';
+
+            document.getElementById('modalConfirm').onclick = () => {
+                alert(`✅ Payment of $${billAmount} processed from ${toAccount.label}`);
+                closeModal();
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+        }
+
+        // Persona switcher
+        document.addEventListener('DOMContentLoaded', () => {
+            const switcher = document.getElementById('personaSwitcher');
+            if (switcher) {
+                switcher.addEventListener('change', async (e) => {
+                    currentPersona = e.target.value;
+                    await loadDashboardData();
+                });
+            }
+        });
+
+        // Pie chart generator
+        function createPieChart(cash, investments) {
+            const total = cash + investments;
+            const cashPercent = (cash / total * 100).toFixed(1);
+            const investPercent = (investments / total * 100).toFixed(1);
+
+            return `
+                <div class="glass-panel" style="text-align: center;">
+                    <h3 style="margin-bottom: 2rem;">Net Worth Breakdown</h3>
+                    <div class="pie-chart-container">
+                        <div class="pie-chart" style="background: conic-gradient(#10b981 0% ${cashPercent}%, #6366f1 ${cashPercent}% 100%);">
+                            <div class="pie-center">
+                                <div style="font-size: 2rem; font-weight: bold;">$${(total / 1000).toFixed(0)}k</div>
+                                <div style="font-size: 0.875rem; color: #94a3b8;">Total</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; gap: 2rem;">
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%;"></div>
+                                <span style="color: #94a3b8; font-size: 0.875rem;">Cash</span>
+                            </div>
+                            <div style="font-weight: bold;">${cashPercent}%</div>
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                                <div style="width: 12px; height: 12px; background: #6366f1; border-radius: 50%;"></div>
+                                <span style="color: #94a3b8; font-size: 0.875rem;">Investments</span>
+                            </div>
+                            <div style="font-weight: bold;">${investPercent}%</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fee comparison widget
+        function createFeeComparison() {
+            const highFeeAmount = 45000;
+            const highFeeMER = 2.3;
+            const lowFeeMER = 0.5;
+            const years = 30;
+            const savings = 127000; // Simplified calculation
+
+            return `
+                <div class="glass-panel">
+                    <h3 style="margin-bottom: 1.5rem;">💰 Fee Analyzer</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem;">High-Fee Mutual Fund</div>
+                            <div style="font-weight: bold; margin-bottom: 0.5rem;">Bank 1</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #ef4444;">MER: ${highFeeMER}%</div>
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">$${highFeeAmount.toLocaleString()} invested</div>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 0.5rem;">Low-Fee ETF</div>
+                            <div style="font-weight: bold; margin-bottom: 0.5rem;">Fintech 1</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">MER: ${lowFeeMER}%</div>
+                            <div style="color: #94a3b8; font-size: 0.875rem; margin-top: 0.5rem;">Recommended alternative</div>
+                        </div>
+                    </div>
+                    <div class="insight-card" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                        <div class="insight-icon">💰</div>
+                        <h3>30-Year Impact</h3>
+                        <p style="color: #94a3b8; margin-bottom: 1rem;">By switching to a low-fee ETF, you could save approximately <strong style="color: #10b981;">$${Math.round(savings / 1000)}k</strong> over ${years} years.</p>
+                        <button class="btn">Switch to Low-Fee ETF</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Progress bar for payroll
+        function createAccruedWagesProgress() {
+            const accrued = 847.50;
+            const total = 1300.00;
+            const percentage = (accrued / total * 100).toFixed(0);
+            const daysLeft = 5;
+
+            return `
+                <div class="glass-panel">
+                    <h3>Earned Wage Access</h3>
+                    <div style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <div>
+                                <div style="color: #94a3b8; font-size: 0.875rem;">Accrued this period</div>
+                                <div style="font-size: 2rem; font-weight: bold;">$${accrued}</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: #94a3b8; font-size: 0.875rem;">Total pay period</div>
+                                <div style="font-size: 1.5rem; font-weight: bold; color: #94a3b8;">$${total}</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar progress-enhanced">
+                            <div class="progress-fill" style="width: ${percentage}%;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.875rem; margin-bottom: 1rem;">
+                            <span>${percentage}% of pay period complete</span>
+                            <span>${daysLeft} days until payday</span>
+                        </div>
+                        <button class="btn" style="width: 100%;">Access $500 Now (No Interest)</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Inflation alerts
+        function addInflationAlerts() {
+            const billsWithInflation = [
+                { name: "Toronto Hydro", current: 127.50, lastYear: 110.00 },
+                { name: "Groceries (Monthly Avg)", current: 450.00, lastYear: 380.00 }
+            ];
+
+            let alertHTML = '<div class="insight-card" style="background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3);"><div class="insight-icon">📈</div><h3>Inflation Alert</h3>';
+
+            billsWithInflation.forEach(bill => {
+                const increase = ((bill.current - bill.lastYear) / bill.lastYear * 100).toFixed(1);
+                if (increase > 10) {
+                    alertHTML += `<p style="color: #94a3b8; margin: 0.5rem 0;"><strong>${bill.name}:</strong> $${bill.current} <span class="badge badge-warning">↑ ${increase}% YoY</span></p>`;
+                }
+            });
+
+            alertHTML += '</div>';
+            return alertHTML;
+        }
+
+
+        function updateAccountsView() {
+            const accountsView = document.getElementById('accountsView');
+            const institutions = personaData.institutions;
+
+            document.getElementById('accountCount').textContent = personaData.accounts.length;
+            document.getElementById('institutionCount').textContent = institutions.length;
+
+            let html = '';
+            institutions.forEach(inst => {
+                const instAccounts = personaData.accounts.filter(a => a.institution_id === inst.id);
+                html += `
+                    <div class="institution-group">
+                        <div class="institution-header">
+                            <span style="font-size: 2rem;">${inst.logo}</span>
+                            <div>
+                                <div>${inst.name}</div>
+                                <div style="font-size: 0.875rem; color: #94a3b8; font-weight: normal;">${inst.type} • ${instAccounts.length} accounts</div>
+                            </div>
+                        </div>
+                        ${instAccounts.map(acc => `
+                            <div class="account-card">
+                                <div class="account-info">
+                                    <div class="account-label">${acc.label}</div>
+                                    <div class="account-meta">${acc.account_number} • ${acc.purpose}</div>
+                                </div>
+                                <div class="account-balance">$${acc.balance.toLocaleString()}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            });
+
+            accountsView.innerHTML = html;
+        }
+
+        function updateOverview() {
+            // Calculate global metrics
+            const checkingAccounts = personaData.accounts.filter(a => a.type === 'CHECKING');
+            const globalLiquidity = checkingAccounts.reduce((sum, a) => sum + a.balance, 0);
+
+            const totalNetWorth = personaData.accounts
+                .filter(a => a.type !== 'LOAN')
+                .reduce((sum, a) => sum + a.balance, 0);
+
+            // Calculate true income from transactions
+            const incomeTxns = personaData.transactions.filter(t => t.category === 'Income');
+            const monthlyIncome = incomeTxns.reduce((sum, t) => sum + t.amount, 0);
+            const trueIncome = monthlyIncome * 12;
+
+            document.getElementById('personaName').textContent = personaData.profile.name;
+            document.getElementById('personaSegment').textContent = personaData.profile.segment;
+            document.getElementById('globalLiquidity').textContent = `$${globalLiquidity.toLocaleString()}`;
+            document.getElementById('totalNetWorth').textContent = `$${totalNetWorth.toLocaleString()}`;
+            document.getElementById('trueIncome').textContent = `$${Math.round(trueIncome).toLocaleString()}`;
+
+            // Show insight about multiple income sources
+            const incomeSources = [...new Set(incomeTxns.map(t => t.account_id))];
+            if (incomeSources.length > 1) {
+                document.getElementById('globalInsights').innerHTML = `
+                    <div class="insight-card">
+                        <div class="insight-icon">💡</div>
+                        <h3>Multiple Income Streams Detected</h3>
+                        <p style="color: #94a3b8;">You have income flowing into ${incomeSources.length} different accounts. FinConnect aggregates all sources to show your true earning power of $${Math.round(trueIncome).toLocaleString()}/year.</p>
+                    </div>
+                `;
+            }
+
+            // Unified transaction feed
+            const transactionsDiv = document.getElementById('transactions');
+            transactionsDiv.innerHTML = personaData.transactions
+                .slice(0, 10)
+                .map(txn => `
+                    <div class="transaction">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${txn.description}</div>
+                            <div style="font-size: 0.875rem; color: #94a3b8;">${txn.date} • ${txn.institution} • ${txn.category}</div>
+                        </div>
+                        <div style="font-weight: bold; ${txn.amount > 0 ? 'color: #10b981' : ''}">${txn.amount > 0 ? '+' : ''}$${Math.abs(txn.amount).toLocaleString()}</div>
+                    </div>
+                `).join('');
+        }
+
+        function updateLending() {
+            const checkingAccounts = personaData.accounts.filter(a => a.type === 'CHECKING');
+            const primaryAccount = checkingAccounts[0];
+            const globalLiquidity = checkingAccounts.reduce((sum, a) => sum + a.balance, 0);
+
+            // Show comparison
+            document.getElementById('lendingComparison').innerHTML = `
+                <div class="grid">
+                    <div class="glass-panel" style="background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);">
+                        <h3>❌ Traditional View (Single Bank)</h3>
+                        <p style="color: #94a3b8; margin: 1rem 0;">Account: ${primaryAccount.label}</p>
+                        <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0;">$${primaryAccount.balance.toLocaleString()}</div>
+                        <div class="badge badge-warning">Insufficient for approval</div>
+                    </div>
+                    <div class="glass-panel" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.3);">
+                        <h3>✅ FinConnect View (All Accounts)</h3>
+                        <p style="color: #94a3b8; margin: 1rem 0;">Global Liquidity across ${checkingAccounts.length} accounts</p>
+                        <div style="font-size: 2rem; font-weight: bold; margin: 1rem 0; color: #10b981;">$${globalLiquidity.toLocaleString()}</div>
+                        <div class="badge badge-success">Strong cash position</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('cashFlowScore').textContent = scoreData.cash_flow_score;
+            document.getElementById('affordability').textContent = `$${scoreData.affordability_monthly}`;
+
+            const loanOfferDiv = document.getElementById('loanOffer');
+            if (scoreData.pre_approved) {
+                loanOfferDiv.innerHTML = `
+                    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid #10b981; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #10b981; font-weight: 600;">
+                            ✓ You are Pre-Approved!
+                        </div>
+                    </div>
+                    <button class="btn" style="width: 100%;">Accept Loan Offer</button>
+                `;
+            } else {
+                loanOfferDiv.innerHTML = `
+                    <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; color: #f59e0b; font-weight: 600;">
+                            ℹ More history needed
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function updatePFM() {
+            const subs = personaData.subscriptions || [];
+            const total = subs.reduce((sum, s) => s.amount + sum, 0);
+            const accountsAffected = [...new Set(subs.map(s => s.account_id))].length;
+
+            document.getElementById('subscriptionInsights').innerHTML = `
+                <div class="insight-card">
+                    <div class="insight-icon">🔍</div>
+                    <h3>Subscription Hunter Found</h3>
+                    <p style="color: #94a3b8; margin-bottom: 1rem;">You spend <strong>$${total.toFixed(2)}/month</strong> on subscriptions across <strong>${accountsAffected} different cards</strong></p>
+                    <div class="badge badge-info">Cross-account detection enabled</div>
+                </div>
+                ${addInflationAlerts()}
+            `;
+
+            const subsDiv = document.getElementById('subscriptions');
+            subsDiv.innerHTML = subs.map(sub => {
+                const account = personaData.accounts.find(a => a.id === sub.account_id);
+                return `
+                    <div class="transaction">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${sub.name}</div>
+                            <div style="font-size: 0.875rem; color: #94a3b8;">${account ? account.label + ' (' + account.institution_name + ')' : 'Unknown account'}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-weight: bold;">$${sub.amount}</div>
+                            ${sub.status === 'increased' ? `<span class="badge badge-warning">+$${sub.change} ↑</span>` : `<span class="badge badge-success">Stable</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateWealth() {
+            const cash = personaData.accounts
+                .filter(a => a.type === 'CHECKING' || a.type === 'SAVINGS')
+                .reduce((sum, a) => sum + a.balance, 0);
+
+            const investments = personaData.accounts
+                .filter(a => a.type === 'INVESTMENT')
+                .reduce((sum, a) => sum + a.balance, 0);
+
+            document.getElementById('totalCash').textContent = `$${cash.toLocaleString()}`;
+            document.getElementById('totalInvestments').textContent = `$${investments.toLocaleString()}`;
+
+            // Find lazy money
+            const checkingHighBalance = personaData.accounts.find(a => a.type === 'CHECKING' && a.balance > 5000);
+            const bestSavings = personaData.accounts
+                .filter(a => a.type === 'SAVINGS')
+                .sort((a, b) => (b.interest_rate || 0) - (a.interest_rate || 0))[0];
+
+            let alertHTML = '';
+
+            // Add pie chart
+            alertHTML += createPieChart(cash, investments);
+
+            // Add fee comparison
+            alertHTML += createFeeComparison();
+
+            // Add lazy money alert
+            if (checkingHighBalance && bestSavings) {
+                const potential = checkingHighBalance.balance * (bestSavings.interest_rate / 100);
+                document.getElementById('optimizationPotential').textContent = `$${Math.round(potential)}`;
+
+                alertHTML += `
+                    <div class="insight-card">
+                        <div class="insight-icon">💡</div>
+                        <h3>Lazy Money Detected!</h3>
+                        <p style="color: #94a3b8; margin-bottom: 1rem;">You have <strong>$${checkingHighBalance.balance.toLocaleString()}</strong> in "${checkingHighBalance.label}" (${checkingHighBalance.institution_name}) earning 0%.</p>
+                        <p style="color: #94a3b8; margin-bottom: 1rem;">Move to <strong>"${bestSavings.label}"</strong> (${bestSavings.institution_name}) to earn ${bestSavings.interest_rate}% = <strong>$${Math.round(potential)}/year</strong></p>
+                        <button class="btn">Move Money</button>
+                    </div>
+                `;
+            }
+
+            document.getElementById('lazyMoneyAlert').innerHTML = alertHTML;
+        }
+
+        function updatePayroll() {
+            const payrollContent = document.getElementById('payrollContent');
+
+            if (currentPersona === 'builder') {
+                payrollContent.innerHTML = `
+                    <div class="glass-panel">
+                        <h3>Payroll from Dedicated Account</h3>
+                        <p style="color: #94a3b8; margin-bottom: 1rem;">Account 6: Payroll Account (Wealthsimple) - $45,000 available</p>
+                        <button class="btn">Run Payroll ($12,000)</button>
+                    </div>
+                `;
+            } else {
+                const incomeTxns = personaData.transactions.filter(t => t.category === 'Income');
+                const sources = [...new Set(incomeTxns.map(t => t.account_id))];
+
+                payrollContent.innerHTML = `
+                    <div class="insight-card">
+                        <div class="insight-icon">✓</div>
+                        <h3>Income Verified from ${sources.length} Sources</h3>
+                        <p style="color: #94a3b8;">FinConnect detected income across multiple accounts for accurate verification</p>
+                    </div>
+                    ${createAccruedWagesProgress()}
+                `;
+            }
+        }
+
+        function updatePayments() {
+            const bills = personaData.bills || [];
+            const checkingAccounts = personaData.accounts.filter(a => a.type === 'CHECKING');
+            const bestAccount = checkingAccounts.sort((a, b) => b.balance - a.balance)[0];
+
+            document.getElementById('paymentSourceSelector').innerHTML = `
+                <div class="insight-card">
+                    <div class="insight-icon">🎯</div>
+                    <h3>Smart Source Selection</h3>
+                    <p style="color: #94a3b8;">FinConnect recommends paying from <strong>${bestAccount.label}</strong> (${bestAccount.institution_name}) with balance of <strong>$${bestAccount.balance.toLocaleString()}</strong></p>
+                </div>
+            `;
+
+            const billsDiv = document.getElementById('billsList');
+            billsDiv.innerHTML = bills.map((bill, index) => {
+                const primaryAccount = checkingAccounts[0]; // First account (usually lowest balance)
+                const canPayFromPrimary = primaryAccount.balance >= bill.amount;
+                const alternativeAccount = checkingAccounts.find(a => a.balance >= bill.amount && a.id !== primaryAccount.id);
+
+                return `
+                    <div class="transaction">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600;">${bill.name}</div>
+                            <div style="font-size: 0.875rem; color: #94a3b8;">Due: ${bill.due_date}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="font-size: 1.5rem; font-weight: bold;">$${bill.amount}</div>
+                            ${canPayFromPrimary ?
+                        `<button class="btn" style="padding: 0.5rem 1rem; font-size: 0.875rem;" onclick="alert('✅ Payment of $${bill.amount} processed from ${primaryAccount.label}')">Pay from ${primaryAccount.label}</button>` :
+                        alternativeAccount ?
+                            `<button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;" onclick="showPaymentWarning('${bill.name}', ${bill.amount}, ${JSON.stringify(primaryAccount).replace(/"/g, '&quot;')}, ${JSON.stringify(alternativeAccount).replace(/"/g, '&quot;')})">Pay Bill</button>` :
+                            `<span class="badge badge-danger">Insufficient Funds</span>`
+                    }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateTax() {
+            const taxContent = document.getElementById('taxContent');
+
+            if (currentPersona === 'stabilizer') {
+                taxContent.innerHTML = `
+                    <div class="glass-panel" style="text-align: center; padding: 3rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📄</div>
+                        <h3 style="margin-bottom: 1rem;">Not Available for W-2 Employees</h3>
+                        <p style="color: #94a3b8;">This feature is designed for gig workers and business owners</p>
+                    </div>
+                `;
+            } else {
+                taxContent.innerHTML = `
+                    <div class="insight-card">
+                        <div class="insight-icon">🏷️</div>
+                        <h3>Auto-Tagged Business Expenses</h3>
+                        <p style="color: #94a3b8;">FinConnect scanned transactions across all your accounts and found deductible expenses</p>
+                    </div>
+                    <div class="glass-panel">
+                        <h3>Estimated Deductions: $237.50</h3>
+                        <div class="transaction">
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">Staples - Office Supplies</div>
+                                <div style="font-size: 0.875rem; color: #94a3b8;">Account 1 (Big Bank)</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="font-weight: bold;">$127.50</div>
+                                <span class="badge badge-success">🏷 Tagged</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function showModule(moduleName) {
+            document.querySelectorAll('.module-content').forEach(m => m.classList.add('hidden'));
+            document.getElementById(`module-${moduleName}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Check API on load
+        checkAPI();
+        setInterval(checkAPI, 5000);
+    </script>
+</body>
+
+</html>
